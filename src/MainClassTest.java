@@ -3,7 +3,7 @@ import org.junit.Test;
 
 public class MainClassTest {
     @Test
-    public void testGetLocalNumber(){
-        Assert.assertEquals("Wrong local number",14, MainClass.getLocalNumber());
+    public void testGetClassNumber(){
+        Assert.assertTrue("Class number less than 45",MainClass.getClassNumber() > 45);
     }
 }
