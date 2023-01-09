@@ -138,6 +138,36 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testCheckSearchResults(){
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Java",
+                "Cannot find input",
+                5
+        );
+
+        List<WebElement> webElementList = waitForElementsPresentMoreThan(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                "Cannot find more than 1 search results",
+                15,
+                1
+        );
+
+        for (WebElement element: webElementList){
+            Assert.assertTrue(
+                    "Unexpected title",
+                    element.getAttribute("text").contains("Java")
+            );
+        }
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds){
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
