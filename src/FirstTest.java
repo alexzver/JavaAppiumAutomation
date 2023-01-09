@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
     private AppiumDriver driver;
@@ -47,10 +48,11 @@ public class FirstTest {
                 5
         );
 
-        waitForElementAndClear(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Cannot find serach field",
-                5
+        waitForElementsPresentMoreThan(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"),
+                "Cannot find more than 1 search results",
+                15,
+                1
         );
 
         waitForElementAndClick(
@@ -60,8 +62,8 @@ public class FirstTest {
         );
 
         waitForElementNotPresent(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "X is still present on the page",
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"),
+                "Search result is still present on the page",
                 10
         );
 
@@ -182,4 +184,13 @@ public class FirstTest {
                 actualText
         );
     }
+
+    private List<WebElement> waitForElementsPresentMoreThan(By by, String error_message, long timeoutInSeconds, int num){
+        WebDriverWait wait = new WebDriverWait(driver,timeoutInSeconds);
+        wait.withMessage(error_message + "\n");
+        return wait.until(
+                ExpectedConditions.numberOfElementsToBeMoreThan(by, num)
+        );
+    }
+
 }
