@@ -5,10 +5,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,26 +15,28 @@ import java.util.List;
 
 public class FirstTest {
     private AppiumDriver driver;
+
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("platformName","Android");
-        capabilities.setCapability("deviceName","AndroidTestDevice");
-        capabilities.setCapability("platformVersion","8.0");
-        capabilities.setCapability("automationName","Appium");
-        capabilities.setCapability("appPackage","org.wikipedia");
-        capabilities.setCapability("appActivity",".main.MainActivity");
-        capabilities.setCapability("app","C:\\Users\\alexz\\JavaAppiumAutomation\\apks\\org.wikipedia.apk");
+        capabilities.setCapability("platformName", "Android");
+        capabilities.setCapability("deviceName", "AndroidTestDevice");
+        capabilities.setCapability("platformVersion", "8.0");
+        capabilities.setCapability("automationName", "Appium");
+        capabilities.setCapability("appPackage", "org.wikipedia");
+        capabilities.setCapability("appActivity", ".main.MainActivity");
+        capabilities.setCapability("app", "C:\\Users\\alexz\\JavaAppiumAutomation\\apks\\org.wikipedia.apk");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
     }
+
     @After
-    public void tearDown(){
+    public void tearDown() {
         driver.quit();
     }
 
     @Test
-    public void testCancelSearch(){
+    public void testCancelSearch() {
         waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
                 "Cannot find 'Search Wikipedia' input",
@@ -72,8 +71,9 @@ public class FirstTest {
 
 
     }
+
     @Test
-    public void firstTest(){
+    public void firstTest() {
 
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
@@ -95,7 +95,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testCompareArticleTitle(){
+    public void testCompareArticleTitle() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find search input",
@@ -128,7 +128,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testCheckText(){
+    public void testCheckText() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find search input",
@@ -142,7 +142,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testCheckSearchResults(){
+    public void testCheckSearchResults() {
         waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
                 "Cannot find 'Search Wikipedia' input",
@@ -163,7 +163,7 @@ public class FirstTest {
                 1
         );
 
-        for (WebElement element: webElementList){
+        for (WebElement element : webElementList) {
             Assert.assertTrue(
                     "Unexpected title",
                     element.getText().contains("Java")
@@ -172,7 +172,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testSwipeArticle(){
+    public void testSwipeArticle() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find search input",
@@ -199,7 +199,7 @@ public class FirstTest {
     }
 
     @Test
-    public void saveFirstArticleToMyList(){
+    public void saveFirstArticleToMyList() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find search input",
@@ -286,7 +286,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testAmountOfNotEmptySearch(){
+    public void testAmountOfNotEmptySearch() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find search input",
@@ -301,7 +301,7 @@ public class FirstTest {
                 5
         );
 
-        String search_result_locator= "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
+        String search_result_locator = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
 
         waitForElementPresent(
                 By.xpath(search_result_locator),
@@ -320,7 +320,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testAmountOfEmptySearch(){
+    public void testAmountOfEmptySearch() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find search input",
@@ -351,7 +351,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testChangeScreenOrientationOnSearchResults(){
+    public void testChangeScreenOrientationOnSearchResults() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find search input",
@@ -412,7 +412,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testCheckSearchArticleInBackground(){
+    public void testCheckSearchArticleInBackground() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find search input",
@@ -436,44 +436,182 @@ public class FirstTest {
                 5
         );
     }
-    private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds){
+
+    @Test
+    public void saveTwoArticlesToMyList() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find search input"
+        );
+
+        String search_string = "Java";
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                search_string,
+                "Cannot find input",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"),
+                "Cannot find and click first search output"
+        );
+        waitForElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find article title",
+                15
+        );
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
+                "Cannot find button to open options"
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='Add to reading list']"),
+                "Cannot find option to add article to reading list"
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/onboarding_button"),
+                "Cannot find 'Got it' button on overlay "
+        );
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/text_input"),
+                "Cannot find input to set name of articles folder",
+                5
+        );
+
+        String name_of_folder = "Test Folder";
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/text_input"),
+                name_of_folder,
+                "Cannot send text in folder articles input",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='OK']"),
+                "Cannot press Ok button"
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/menu_page_search"),
+                "Cannot find and click on search button on the top of the article"
+        );
+
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.TextView[@resource-id='org.wikipedia:id/text1'][@text='" + search_string + "']"),
+                "Cannot find and click previous search result in the list"
+        );
+
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container'][2]"),
+                "Cannot find and click second search output"
+        );
+
+
+        String second_article_title = waitForElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find article title",
+                15
+        ).getText();
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
+                "Cannot find button to open options"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Add to reading list']"),
+                "Cannot find option to add article to reading list"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.TextView[@resource-id='org.wikipedia:id/item_title'][@text='" + name_of_folder + "']"),
+                "Cannot find previously created folder and click on it"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "Cannot close article, cannot find X button"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
+                "Cannot find navigation button to my list"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='" + name_of_folder + "']"),
+                "Cannot find created folder"
+        );
+
+        swipeElementToLeft(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_description']"),
+                "Cannot find saved article"
+        );
+
+        waitForElementAndClick(
+               By.xpath("//*[@text='" + second_article_title + "']"),
+               "Cannot find and click the second article"
+       );
+
+        String second_article_title_reloaded = waitForElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find title of article",
+                15
+        ).getText();
+
+        Assert.assertEquals(
+                "Article title have been changed after screen rotation",
+                second_article_title,
+                second_article_title_reloaded
+        );
+    }
+
+
+    private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
-    private WebElement waitForElementPresent(By by, String error_message){
+    private WebElement waitForElementPresent(By by, String error_message) {
         return waitForElementPresent(by, error_message, 5);
     }
 
-    private WebElement waitForElementAndClick(By by, String error_message, long timeoutInSeconds){
+
+    private WebElement waitForElementAndClick(By by, String error_message, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.click();
         return element;
     }
 
-    private WebElement waitForElementAndSendKeys(By by, String value, String error_message, long timeoutInSeconds){
+    private WebElement waitForElementAndClick(By by, String error_message) {
+        return waitForElementAndClick(by, error_message, 5);
+    }
+
+    private WebElement waitForElementAndSendKeys(By by, String value, String error_message, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.sendKeys(value);
         return element;
     }
 
 
-    private boolean waitForElementNotPresent(By by, String error_message, long timeoutInSeconds){
-       WebDriverWait wait = new WebDriverWait(driver,timeoutInSeconds);
-       wait.withMessage(error_message + "\n");
-       return wait.until(
-               ExpectedConditions.invisibilityOfElementLocated(by)
-       );
+    private boolean waitForElementNotPresent(By by, String error_message, long timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(error_message + "\n");
+        return wait.until(
+                ExpectedConditions.invisibilityOfElementLocated(by)
+        );
     }
 
-    private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds){
+    private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.clear();
         return element;
     }
 
-    private void assertElementHasText(By by, String error_message, String expectedText){
+    private void assertElementHasText(By by, String error_message, String expectedText) {
         WebElement element = waitForElementPresent(by, error_message, 5);
         String actualText = element.getText();
         Assert.assertEquals(
@@ -483,36 +621,37 @@ public class FirstTest {
         );
     }
 
-    private List<WebElement> waitForElementsPresentMoreThan(By by, String error_message, long timeoutInSeconds, int num){
-        WebDriverWait wait = new WebDriverWait(driver,timeoutInSeconds);
+    private List<WebElement> waitForElementsPresentMoreThan(By by, String error_message, long timeoutInSeconds, int num) {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
         return wait.until(
                 ExpectedConditions.numberOfElementsToBeMoreThan(by, num)
         );
     }
 
-    protected void swipeUp (int timeOfSwipe){
+    protected void swipeUp(int timeOfSwipe) {
         TouchAction action = new TouchAction(driver);
         Dimension size = driver.manage().window().getSize();
         int x = size.width / 2;
-        int start_y = (int) ( size.height * 0.8);
+        int start_y = (int) (size.height * 0.8);
         int end_y = (int) (size.height * 0.2);
         action
-                .press(x,start_y)
+                .press(x, start_y)
                 .waitAction(timeOfSwipe)
                 .moveTo(x, end_y)
                 .release()
                 .perform();
     }
+
     protected void swipeUpQuick() {
         swipeUp(200);
     }
 
-    protected void swipeUpToFindElement(By by, String error_message, int max_swipes){
+    protected void swipeUpToFindElement(By by, String error_message, int max_swipes) {
         int already_swiped = 0;
-        while (driver.findElements(by).size() == 0){
+        while (driver.findElements(by).size() == 0) {
 
-            if (already_swiped > max_swipes){
+            if (already_swiped > max_swipes) {
                 waitForElementPresent(by, "Cannot find element by swiping up \n" + error_message, 0);
                 return;
             }
@@ -521,17 +660,17 @@ public class FirstTest {
         }
     }
 
-    protected void swipeElementToLeft(By by, String error_message){
+    protected void swipeElementToLeft(By by, String error_message) {
         WebElement element = waitForElementPresent(by, error_message, 10);
         int left_x = element.getLocation().getX();
         int right_x = left_x + element.getSize().getWidth();
         int upper_y = element.getLocation().getY();
         int lower_y = upper_y + element.getSize().getHeight();
-        int middle_y = (upper_y + lower_y / 2);
+        int middle_y = (upper_y + lower_y) / 2;
 
         TouchAction touchAction = new TouchAction(driver);
         touchAction
-                .press(right_x,middle_y)
+                .press(right_x, middle_y)
                 .waitAction(300)
                 .moveTo(left_x, middle_y)
                 .release()
@@ -540,20 +679,20 @@ public class FirstTest {
 
     }
 
-    private int getAmountOfElements(By by){
+    private int getAmountOfElements(By by) {
         List elements = driver.findElements(by);
         return elements.size();
     }
 
-    private void assertElementNotPresent(By by, String error_message){
+    private void assertElementNotPresent(By by, String error_message) {
         int amount_of_elements = getAmountOfElements(by);
-        if (amount_of_elements > 0){
+        if (amount_of_elements > 0) {
             String default_message = "An element " + by.toString() + " supposed to be not present";
             throw new AssertionError(default_message + " " + error_message);
         }
     }
 
-    private String waitForElementAndGetAttribute(By by, String attribute, String error_message, long timeoutInSeconds){
+    private String waitForElementAndGetAttribute(By by, String attribute, String error_message, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         return element.getAttribute(attribute);
     }
