@@ -1,39 +1,14 @@
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
-import io.appium.java_client.android.AndroidDriver;
-import org.junit.After;
+import lib.CoreTestCase;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.*;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.net.URL;
 import java.util.List;
 
-public class FirstTest {
-    private AppiumDriver driver;
-
-    @Before
-    public void setUp() throws Exception {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("platformName", "Android");
-        capabilities.setCapability("deviceName", "AndroidTestDevice");
-        capabilities.setCapability("platformVersion", "8.0");
-        capabilities.setCapability("automationName", "Appium");
-        capabilities.setCapability("appPackage", "org.wikipedia");
-        capabilities.setCapability("appActivity", ".main.MainActivity");
-        capabilities.setCapability("app", "C:\\Users\\alexz\\JavaAppiumAutomation\\apks\\org.wikipedia.apk");
-
-        driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-    }
-
-    @After
-    public void tearDown() {
-        driver.quit();
-    }
+public class FirstTest extends CoreTestCase {
 
     @Test
     public void testCancelSearch() {
@@ -73,7 +48,7 @@ public class FirstTest {
     }
 
     @Test
-    public void firstTest() {
+    public void testSearch() {
 
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
@@ -199,7 +174,7 @@ public class FirstTest {
     }
 
     @Test
-    public void saveFirstArticleToMyList() {
+    public void testSaveFirstArticleToMyList() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find search input",
@@ -441,7 +416,7 @@ public class FirstTest {
     }
 
     @Test
-    public void saveTwoArticlesToMyList() {
+    public void testSaveTwoArticlesToMyList() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find search input"
@@ -572,7 +547,7 @@ public class FirstTest {
     }
 
     @Test
-    public void checkTitlePresence() {
+    public void testCheckTitlePresence() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find search input"
